@@ -1,5 +1,5 @@
-Christopher Silva
+Christopher Silva  
 August 31, 2016
 
-Availability: 24/7
+Availability: 24/7  
 URL: https://vagrant.ssilva.work
