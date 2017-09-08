@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Earth Thoughts</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+	<div class="wrapper">
+		<div id="image-mask">
+			<img id="image" src="" />
+		</div>
+		<h1 id="text"></h1>
+		<div id="button-wrapper">
+			<button id="next-button" onclick="next()">New Earth Thought</button>
+		</div>
+	</div>
+
+
+	<script>
+		get_image();
+		get_text();
+		function get_image() {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', 'http://localhost:5000/get_image');
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					console.log(xhr.responseText);
+					data = JSON.parse(xhr.responseText);
+					document.getElementById('image').src = data.url;
+				} else {
+					alert('Request failed.  Returned status of ' + xhr.status);
+				}
+			};
+			xhr.send();
+		}
+		function get_text() {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', 'http://localhost:5000/get_text');
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					console.log(xhr.responseText);
+					data = JSON.parse(xhr.responseText);
+					document.getElementById('text').innerHTML = data.text;
+				} else {
+					alert('Request failed.  Returned status of ' + xhr.status);
+				}
+			};
+			xhr.send();
+		}
+		function next() {
+			get_image();
+			get_text();
+		}
+	</script>
+</body>
+
+</html>
