@@ -10,16 +10,17 @@
 
 <body>
 
-	<div class="wrapper">
+	<div id="wrapper">
 		<div id="image-mask">
 			<img id="image" src="" />
 		</div>
 		<h1 id="text"></h1>
 		<div id="button-wrapper">
-			<button id="next-button" onclick="next()">New Earth Thought</button>
+			<div id="next-button" onclick="next()">New Earth Thought</div>
 		</div>
 	</div>
 
+	<a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/earth_thoughts">Source</a>
 
 	<script>
 		get_image();
@@ -29,7 +30,6 @@
 			xhr.open('GET', 'http://localhost:5000/get_image');
 			xhr.onload = function () {
 				if (xhr.status === 200) {
-					console.log(xhr.responseText);
 					data = JSON.parse(xhr.responseText);
 					document.getElementById('image').src = data.url;
 				} else {
@@ -43,7 +43,6 @@
 			xhr.open('GET', 'http://localhost:5000/get_text');
 			xhr.onload = function () {
 				if (xhr.status === 200) {
-					console.log(xhr.responseText);
 					data = JSON.parse(xhr.responseText);
 					document.getElementById('text').innerHTML = data.text;
 				} else {
