@@ -27,7 +27,7 @@
 		get_text();
 		function get_image() {
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'http://localhost:5000/get_image');
+			xhr.open('GET', 'https://vagrant.ssilva.work/api/get_image');
 			xhr.onload = function () {
 				if (xhr.status === 200) {
 					data = JSON.parse(xhr.responseText);
@@ -40,7 +40,7 @@
 		}
 		function get_text() {
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'http://localhost:5000/get_text');
+			xhr.open('GET', 'https://vagrant.ssilva.work/api/get_text');
 			xhr.onload = function () {
 				if (xhr.status === 200) {
 					data = JSON.parse(xhr.responseText);
