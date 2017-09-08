@@ -8,23 +8,15 @@ body {
     margin: auto;
     margin-top: 100px;
 }
-#image-mask {
+#image {
+    object-fit: cover;
+    object-position: 50% 50%;
     width: 600px;
     height: 450px;
-    overflow: hidden;
+
     border-radius: 10px;
     position: relative;
     box-shadow: 5px 5px 8px #888;
-}
-#image {
-    position: absolute;
-    margin: auto; 
-    min-height: 100%;
-    min-width: 100%;
-    left: -100%;
-    right: -100%;
-    top: -100%;
-    bottom: -100%;
 }
 #text {
     text-align: center;
