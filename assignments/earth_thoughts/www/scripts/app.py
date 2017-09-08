@@ -4,9 +4,14 @@ from flask_cors import CORS
 import json
 from flask import jsonify
 import random
+import praw
+import os
 
 app = Flask(__name__)
 CORS(app)
+
+textList = []
+imageList = []
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
@@ -37,29 +42,22 @@ def site_map():
 
 @app.route('/get_image')
 def get_image():
-    image_list = []
-    jsondata = json.loads(open('earthporn.json','r').read())
-    for child in jsondata['data']['children']:
-        image_list.append(child['data']['preview']['images'][0]['source']['url'])
-    
-    random.shuffle(image_list)
-
-
-    return jsonify({"success":True,"url":image_list[0]})
+    random.shuffle(imageList)
+    return jsonify({"success":True,"url":imageList[0]})
 
 
 @app.route('/get_text')
 def get_text():
-    text_list = []
-    jsondata = json.loads(open('showerthoughts.json','r').read())
-    for child in jsondata['data']['children']:
-        text_list.append(child['data']['title'])
-    
-    random.shuffle(text_list)
+    random.shuffle(textList)
+    return jsonify({"success":True,"text":textList[0]})
 
+def update_posts():
+    reddit = praw.Reddit(client_id=os.environ['client_id'],
+			client_secret=os.environ['client_secret'],
+			user_agent='earth thoughts by /u/csos95')
+    for submission in reddit.subreddit('Showerthoughts').hot(limit=100):
+        textList.append(submission.title)
+    for submission in reddit.subreddit('EarthPorn').hot(limit=100):
+        imageList.append(submission.url)
 
-    return jsonify({"success":True,"text":text_list[0]})
-    
-    
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5050)
+update_posts()
