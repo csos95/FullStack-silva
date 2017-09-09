@@ -21,37 +21,33 @@
 	<a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/earth_thoughts">Source</a>
 
 	<script>
-		get_image();
-		get_text();
+		next();
 		function get_image() {
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'https://vagrant.ssilva.work/api/get_image');
-			xhr.onload = function () {
-				if (xhr.status === 200) {
-					data = JSON.parse(xhr.responseText);
-					document.getElementById('image').src = data.url;
-				} else {
-					alert('Request failed.  Returned status of ' + xhr.status);
-				}
-			};
-			xhr.send();
+			api_call('https://vagrant.ssilva.work/api/get_image', function (data) {
+				document.getElementById('image').src = data.url;
+			});
 		}
 		function get_text() {
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'https://vagrant.ssilva.work/api/get_text');
-			xhr.onload = function () {
-				if (xhr.status === 200) {
-					data = JSON.parse(xhr.responseText);
-					document.getElementById('text').innerHTML = data.text;
-				} else {
-					alert('Request failed.  Returned status of ' + xhr.status);
-				}
-			};
-			xhr.send();
+			api_call('https://vagrant.ssilva.work/api/get_text', function (data) {
+				document.getElementById('text').innerHTML = data.text;
+			});
 		}
 		function next() {
 			get_image();
 			get_text();
+		}
+		function api_call(url, func) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', url);
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					data = JSON.parse(xhr.responseText);
+					func(data);
+				} else {
+					alert('Request failed.  Returned status of ' + xhr.status);
+				}
+			};
+			xhr.send();
 		}
 	</script>
 </body>
