@@ -58,6 +58,8 @@ def update_posts():
     reddit = praw.Reddit(client_id=os.environ['client_id'],
 			client_secret=os.environ['client_secret'],
 			user_agent='earth thoughts by /u/csos95')
+    del textList[:]
+    del imageList[:]
     for submission in reddit.subreddit('Showerthoughts').hot(limit=100):
         textList.append(submission.title)
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
