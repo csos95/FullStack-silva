@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
     echo 'Installing requests...'; pip install requests
     echo 'Installing flask_cors...'; pip install flask_cors
     echo 'Installing praw...'; pip install praw
+    echo 'Installing apscheduler...'; pip install apscheduler
     exit 0" | /bin/bash
   SHELL
 end

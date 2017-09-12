@@ -6,6 +6,10 @@ from flask import jsonify
 import random
 import praw
 import os
+import time
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
 CORS(app)
@@ -50,6 +54,7 @@ def get_text():
     return jsonify({"success":True,"text":textList[random.randint(0,len(textList)-1)]})
 
 def update_posts():
+    print('updating posts...')
     reddit = praw.Reddit(client_id=os.environ['client_id'],
 			client_secret=os.environ['client_secret'],
 			user_agent='earth thoughts by /u/csos95')
@@ -58,5 +63,16 @@ def update_posts():
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageList.append(submission.url)
+
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(
+    func=update_posts,
+    trigger=IntervalTrigger(hours=1),
+    id='update_posts_job',
+    name='updating Showerthoughs and EarthPorn posts every hour',
+                            replace_existing=True)
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 update_posts()
