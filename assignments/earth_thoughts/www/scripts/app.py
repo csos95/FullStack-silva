@@ -42,14 +42,12 @@ def site_map():
 
 @app.route('/get_image')
 def get_image():
-    random.shuffle(imageList)
-    return jsonify({"success":True,"url":imageList[0]})
+    return jsonify({"success":True,"url":imageList[random.randint(0,len(imageList)-1)]})
 
 
 @app.route('/get_text')
 def get_text():
-    random.shuffle(textList)
-    return jsonify({"success":True,"text":textList[0]})
+    return jsonify({"success":True,"text":textList[random.randint(0,len(textList)-1)]})
 
 def update_posts():
     reddit = praw.Reddit(client_id=os.environ['client_id'],
