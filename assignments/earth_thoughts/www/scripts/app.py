@@ -58,6 +58,8 @@ def update_posts():
     for submission in reddit.subreddit('Showerthoughts').hot(limit=100):
         textList.append(submission.title)
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
-        imageList.append(submission.url)
+        if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
+            imageList.append(submission.url)
+    print(imageList)
 
 update_posts()
