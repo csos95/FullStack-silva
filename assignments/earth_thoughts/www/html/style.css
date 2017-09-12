@@ -4,15 +4,15 @@ body {
 }
 #wrapper {
     position: relative;
-    width: 600px;
+    width: 800px;
     margin: auto;
     margin-top: 100px;
 }
 #image {
     object-fit: cover;
     object-position: 50% 50%;
-    width: 600px;
-    height: 450px;
+    width: 800px;
+    height: 600px;
 
     border-radius: 10px;
     position: relative;
