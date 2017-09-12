@@ -60,6 +60,5 @@ def update_posts():
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageList.append(submission.url)
-    print(imageList)
 
 update_posts()
