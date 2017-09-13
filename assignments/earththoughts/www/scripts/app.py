@@ -16,6 +16,9 @@ CORS(app)
 
 textList = []
 imageList = []
+clientID = os.environ['CLIENT_ID']
+clientSecret = os.environ['CLIENT_SECRET']
+
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
@@ -55,8 +58,8 @@ def get_text():
 
 def update_posts():
     print('updating posts...')
-    reddit = praw.Reddit(client_id=os.environ['client_id'],
-			client_secret=os.environ['client_secret'],
+    reddit = praw.Reddit(client_id=clientID,
+			client_secret=clientSecret,
 			user_agent='earth thoughts by /u/csos95')
     del textList[:]
     del imageList[:]
@@ -65,6 +68,8 @@ def update_posts():
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageList.append(submission.url)
+    print('textList: ', len(textList))
+    print('imageList: ', len(imageList))
 
 scheduler = BackgroundScheduler()
 scheduler.start()
