@@ -21,14 +21,15 @@
 	</div>
 
 	<script>
+        let apiURL = 'https://vagrant.ssilva.work/api/';
 		next();
 		function get_image() {
-			api_call('https://vagrant.ssilva.work/api/get_image', function (data) {
+			api_call('get_image', function (data) {
 				document.getElementById('image').src = data.url;
 			});
 		}
 		function get_text() {
-			api_call('https://vagrant.ssilva.work/api/get_text', function (data) {
+			api_call('get_text', function (data) {
 				document.getElementById('text').innerHTML = data.text;
 			});
 		}
@@ -36,9 +37,9 @@
 			get_image();
 			get_text();
 		}
-		function api_call(url, func) {
+		function api_call(endpoint, func) {
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', url);
+			xhr.open('GET', apiURL + endpoint);
 			xhr.onload = function () {
 				if (xhr.status === 200) {
 					data = JSON.parse(xhr.responseText);
