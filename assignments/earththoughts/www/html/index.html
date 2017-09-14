@@ -11,8 +11,8 @@
 <body>
 
 	<a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/earththoughts">Source</a>
-	
-    <div id="wrapper">
+
+	<div id="wrapper">
 		<img id="image" src="" />
 		<h1 id="text"></h1>
 		<div id="button-wrapper">
@@ -20,20 +20,34 @@
 		</div>
 	</div>
 
+	<div id="history">
+
+	</div>
+
 	<script>
-        let apiURL = 'https://vagrant.ssilva.work/api/';
+		let historyEl = document.getElementById('history');
+		let history = [];
+		let apiURL = 'https://vagrant.ssilva.work/api/';
 		next();
 		function get_image() {
 			api_call('get_image', function (data) {
 				document.getElementById('image').src = data.url;
+				history[history.length - 1].url = data.url;
 			});
 		}
 		function get_text() {
 			api_call('get_text', function (data) {
 				document.getElementById('text').innerHTML = data.text;
+				history[history.length - 1].text = data.text;
 			});
 		}
 		function next() {
+			console.log(history)
+			history.push({
+				thumbnail: '',
+				url: '',
+				text: '',
+			})
 			get_image();
 			get_text();
 		}
