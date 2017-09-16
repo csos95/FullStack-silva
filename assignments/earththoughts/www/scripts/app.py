@@ -16,6 +16,7 @@ CORS(app)
 
 textList = []
 imageList = []
+thumbList = []
 clientID = os.environ['CLIENT_ID']
 clientSecret = os.environ['CLIENT_SECRET']
 
@@ -49,7 +50,8 @@ def site_map():
 
 @app.route('/get_image')
 def get_image():
-    return jsonify({"success":True,"url":imageList[random.randint(0,len(imageList)-1)]})
+    i = random.randint(0,len(imageList)-1)
+    return jsonify({"success":True,"url":imageList[i],"thumbnail":thumbList[i]})
 
 
 @app.route('/get_text')
@@ -63,11 +65,13 @@ def update_posts():
 			user_agent='earth thoughts by /u/csos95')
     del textList[:]
     del imageList[:]
+    del thumbList[:]
     for submission in reddit.subreddit('Showerthoughts').hot(limit=100):
         textList.append(submission.title)
     for submission in reddit.subreddit('EarthPorn').hot(limit=100):
         if submission.url.endswith('.jpg') or submission.url.endswith('.png'):
             imageList.append(submission.url)
+            thumbList.append(submission.thumbnail)
     print('textList: ', len(textList))
     print('imageList: ', len(imageList))
 
