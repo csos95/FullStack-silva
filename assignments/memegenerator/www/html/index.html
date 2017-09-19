@@ -4,67 +4,42 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Earth Thoughts</title>
+	<title>Meme Generator</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
 
-	<a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/earththoughts">Source</a>
+	<!-- <a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/memegenerator">Source</a> -->
 
-	<div id="main-wrapper">
-		<img class="image" id="main-image" src="" />
-		<h1 class="text" id="main-text"></h1>
-		<div id="button-wrapper">
-			<div id="next-button" onclick="next()">New Earth Thought</div>
-		</div>
+	<div id="wrapper">
+		<form>
+			<label for="url">URL</label><br>
+			<input id="url" type="url"><br>
+			<label for="top">Top Text</label><br>
+			<input id="top" type="text"><br>
+			<label for="bottom">Bottom Text</label><br>
+			<input id="bottom" type="text"><br>
+			<input type="button" value="submit" onclick="send_request()">
+		</form>
 	</div>
 
-	<div id="history">
-	</div>
 
 	<script>
-		let historyEl = document.getElementById('history');
-		let history = [];
-		let apiURL = 'https://vagrant.ssilva.work/api/';
-		next();
-		function get_image() {
-			api_call('get_image', function (data) {
-				document.getElementById('main-image').src = data.url;
-				history[history.length - 1].thumbnail = data.thumbnail;
-				history[history.length - 1].url = data.url;
-				document.getElementById('history-thumbnail-' + history.length).src = data.thumbnail;
+		let apiURL = 'http://localhost:4568/'
+		function send_request() {
+			let url = document.getElementById('url').value;
+			let top = document.getElementById('url').value;
+			let bottom = document.getElementById('url').value;
+			console.log(url);
+			api_call('grab_image', { 'url': url, 'top': top, 'bottom': bottom }, function () {
+				console.log(data);
 			});
 		}
-		function get_text() {
-			api_call('get_text', function (data) {
-				document.getElementById('main-text').innerHTML = data.text;
-				history[history.length - 1].text = data.text;
-				document.getElementById('history-text-' + history.length).innerHTML = data.text;
-			});
-		}
-		function next() {
-			console.log(history)
-			history.push({
-				thumbnail: '',
-				url: '',
-				text: '',
-			})
-			historyEl.innerHTML += '<div class="history-wrapper" id="history-wrapper-' + history.length + '" onclick="swap_earththough(' + history.length + ')">' +
-				'<img class="image" id="history-thumbnail-' + history.length + '" src="" />' +
-				'<h1 class="text" id="history-text-' + history.length + '"></h1>' +
-				'</div>'
-			get_image();
-			get_text();
-		}
-		function swap_earththough(num) {
-			console.log('swapping to ' + num);
-			document.getElementById('main-image').src = history[num-1].url;
-			document.getElementById('main-text').innerHTML = history[num-1].text;
-		}
-		function api_call(endpoint, func) {
+
+		function api_call(endpoint, options, func) {
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', apiURL + endpoint);
+			xhr.open('POST', apiURL + endpoint + '?' + encode_params(options));
 			xhr.onload = function () {
 				if (xhr.status === 200) {
 					data = JSON.parse(xhr.responseText);
@@ -73,7 +48,20 @@
 					alert('Request failed.  Returned status of ' + xhr.status);
 				}
 			};
-			xhr.send();
+			xhr.send(encodeURI());
+		}
+
+		function encode_params(object) {
+			var encodedString = '';
+			for (var prop in object) {
+				if (object.hasOwnProperty(prop)) {
+					if (encodedString.length > 0) {
+						encodedString += '&';
+					}
+					encodedString += encodeURI(prop + '=' + object[prop]);
+				}
+			}
+			return encodedString;
 		}
 	</script>
 </body>

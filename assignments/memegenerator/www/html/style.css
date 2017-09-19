@@ -2,13 +2,20 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f0f0f0;
 }
-#main-wrapper {
+#wrapper {
     position: relative;
-    width: 800px;
+    width: 600px;
     margin: auto;
     margin-top: 100px;
 }
-.image {
+input {
+    font-size: 14pt;
+    padding: 5px;
+}
+input[type="text"], input[type="url"] {
+    width: 300px;
+}
+/* .image {
     object-fit: cover;
     object-position: 50% 50%;
     width: 800px;
@@ -68,4 +75,4 @@ body {
     text-align:center;
     color: black;
     font-size: 14pt;
-}
+} */
