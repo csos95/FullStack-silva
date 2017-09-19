@@ -39,11 +39,9 @@ def site_map():
 
 @app.route('/grab_image', methods=['POST'])
 def grab_image():
-    print(request.args)
     url = request.args['url']
     top = request.args['top']
     bottom = request.args['bottom']
-#    img = requests.get(url)
     return jsonify({"success":True,"url":url,"top":top,"bottom":bottom})
 
 
