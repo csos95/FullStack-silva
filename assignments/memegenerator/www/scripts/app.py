@@ -1,5 +1,6 @@
 from flask import Flask, url_for
 from flask import request
+import requests
 from flask_cors import CORS
 import json
 from flask import jsonify
@@ -41,21 +42,23 @@ def site_map():
 @app.route('/generate_image', methods=['POST'])
 def generate_image():
     url = request.args['url']
+    name = request.args['name']
     top = request.args['top']
     bottom = request.args['bottom']
 
     # get the image from url
-    # not doing this now, using preloaded image
 
     # open the image and get some properties
-    img = Image.open("DANK.jpg", "r").convert('RGB')
+    r = requests.get(url, stream=True)
+    r.raw.decode_content = True
+    img = Image.open(r.raw).convert('RGB')
     size = width, height = img.size
 
     #need to figure out where to put text and how big based on the size of the image
     # at 60px figure a letter is about 30x60px
     # so then using the number of letters and image width, figure out if
     # a newline is needed and where to start
-    text_size = height / 7
+    text_size = height / 12
 
     draw = ImageDraw.Draw(img,'RGB')
     font = ImageFont.truetype("impact.ttf", text_size)
@@ -65,7 +68,11 @@ def generate_image():
     bottom_width = font.getsize(bottom)[0]
     bottom_start_x = (width / 2) - (bottom_width / 2)
 
+    # this is broken, instead of adding \n and drawing once
+    # split up into multiple strings and draw multiple times
+    # with \n version, the text width given by pillow is incorrect
     # if top_width > width:
+    #     print(top_width)
     #     top_chars = len(top)
     #     copy = top
     #     copy.split(' ')
@@ -77,7 +84,7 @@ def generate_image():
     #         total += 1
     #     print(total)
     #     print(top[:total-2])
-    #     new_text = top[:total-2] + '\n' + top[total-1:]
+    #     new_text = top[:total-2] + '\n' + top[total-2:]
     #     print(new_text)
     #     top = new_text
     #     top_width = font.getsize(new_text)[0]
@@ -90,9 +97,9 @@ def generate_image():
     draw_text(draw, top_start_x, 10, top, (255, 255, 255), (0, 0, 0), font)
     draw_text(draw, bottom_start_x, height-text_size-10, bottom, (255, 255, 255), (0, 0, 0), font)
 
-    img.save('sample-out.jpg')
+    img.save('../html/img/' + name + '.jpg')
     
-    return jsonify({"success":True,"url":url,"top":top,"bottom":bottom})
+    return jsonify({"success":True,"url":'img/' + name + '.jpg',"top":top,"bottom":bottom})
 
 def draw_text(draw, x, y, text, fillcolor, outlinecolor, font):
     draw.text((x-2, y), text, fill=outlinecolor, font=font)

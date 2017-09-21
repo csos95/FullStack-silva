@@ -11,26 +11,32 @@
 <body>
 
 	<div id="wrapper">
-		<form>
+		<form id="meme-form">
 			<label for="url">URL</label><br>
 			<input id="url" type="url"><br><br>
+			<label for="name">Name</label><br>
+			<input id="name" type="text"><br><br>
 			<label for="top">Top Text</label><br>
 			<input id="top" type="text"><br><br>
 			<label for="bottom">Bottom Text</label><br>
 			<input id="bottom" type="text"><br><br>
 			<input type="button" value="submit" onclick="send_request()">
 		</form>
-	</div>
 
+		<img id="meme" src="">
+	</div>
 
 	<script>
 		let apiURL = 'http://localhost:4568/'
 		function send_request() {
 			let url = document.getElementById('url').value;
+			let name = document.getElementById('name').value;
 			let top = document.getElementById('top').value;
 			let bottom = document.getElementById('bottom').value;
-			api_call('generate_image', { 'url': url, 'top': top, 'bottom': bottom }, function () {
+			api_call('generate_image', { 'url': url, 'name': name, 'top': top, 'bottom': bottom }, function () {
 				console.log(data);
+				document.getElementById('meme').src = data.url;
+				document.getElementById('meme-form').style.display = 'none';
 			});
 		}
 
