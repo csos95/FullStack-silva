@@ -10,8 +10,6 @@
 
 <body>
 
-	<!-- <a id="source" href="https://github.com/csos95/FullStack-silva/tree/master/assignments/memegenerator">Source</a> -->
-
 	<div id="wrapper">
 		<form>
 			<label for="url">URL</label><br>
@@ -19,7 +17,7 @@
 			<label for="top">Top Text</label><br>
 			<input id="top" type="text"><br><br>
 			<label for="bottom">Bottom Text</label><br>
-			<input id="bottom" type="text"><br>
+			<input id="bottom" type="text"><br><br>
 			<input type="button" value="submit" onclick="send_request()">
 		</form>
 	</div>
@@ -29,10 +27,9 @@
 		let apiURL = 'http://localhost:4568/'
 		function send_request() {
 			let url = document.getElementById('url').value;
-			let top = document.getElementById('url').value;
-			let bottom = document.getElementById('url').value;
-			console.log(url);
-			api_call('grab_image', { 'url': url, 'top': top, 'bottom': bottom }, function () {
+			let top = document.getElementById('top').value;
+			let bottom = document.getElementById('bottom').value;
+			api_call('generate_image', { 'url': url, 'top': top, 'bottom': bottom }, function () {
 				console.log(data);
 			});
 		}
