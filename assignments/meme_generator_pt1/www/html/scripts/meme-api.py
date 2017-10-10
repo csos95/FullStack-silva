@@ -319,6 +319,8 @@ def meme(action):
     """
 
     if action == 'new':
+        # /meme/new requires top_text, bottom_text, and style_info
+        # it returns the success status and the id of the new meme
         top = request.form['top_text']
         bottom = request.form['bottom_text']
         style = request.form['style_info']
@@ -328,7 +330,7 @@ def meme(action):
 
         objID = client['memes_db']['memes'].insert({"top_text":top,"bottom_text":bottom,"style_info":style})
         
-        return jsonify({"success": True, "_id": str(_id)})
+        return jsonify({"success": True, "_id": str(objID)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5050)
