@@ -177,28 +177,28 @@
                                     </form>
                                 </div>
                                 <div id="registration-form" class="tab-pane fade">
-                                    <form action="/">
+                                    <form action="/user/new">
                                         <div class="form-group">
                                             <label for="first-name">First Name:</label>
-                                            <input type="text" class="form-control" id="first-name" placeholder="Enter your first name" name="first-name">
+                                            <input type="text" class="form-control" id="first-name" placeholder="Enter your first name" name="first">
                                         </div>
                                         <div class="form-group">
                                             <label for="last-name">Last Name:</label>
-                                            <input type="text" class="form-control" id="last-name" placeholder="Enter your last name" name="last-name">
+                                            <input type="text" class="form-control" id="last-name" placeholder="Enter your last name" name="last">
                                         </div>
                                         <div class="form-group">
-                                            <label for="newemail">Email:</label>
-                                            <input type="email" class="form-control" id="newemail" placeholder="Enter new email" name="newemail">
+                                            <label for="email">Email:</label>
+                                            <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username:</label>
                                             <input type="text" class="form-control" id="username" placeholder="Enter your username" name="username">
                                         </div>
                                         <div class="form-group">
-                                            <label for="newpwd">Password:</label>
-                                            <input type="password" class="form-control" id="newpwd" placeholder="New password" name="newpwd">
+                                            <label for="password">Password:</label>
+                                            <input type="password" class="form-control" id="password" placeholder="New password" name="password">
                                         </div>
-                                        <button type="submit" class="btn btn-default" id="register-button">Register</button>
+                                        <button type="submit" class="btn btn-default" id="confirmsignup">Register</button>
                                     </form>
                                 </div>
 
@@ -266,23 +266,27 @@
 
             $('#enterTextForm').hide()
 
-            $("#confirmsignup").click(function () {
-                email = $('#Email').val()
-                userid = $('#userid').val()
-                pass = $('#password').val()
-                repass = $('#reenterpassword').val()
+            $("#confirmsignup").click(function (e) {
+                e.preventDefault();
+                first = $('#first-name').val();
+                last = $('#last-name').val();
+                email = $('#email').val();
+                username = $('#username').val();
+                password = $('#password').val();
 
-                url = "https://vagrant.ssilva.work/api/meme_generator/v1.0/register"
+
+                url = "https://vagrant.ssilva.work/api/user/new";
 
                 data = {
+                    "first": first,
+                    "last": last,
                     "email": email,
-                    "userid": userid,
-                    "pass": pass
-                }
+                    "username": username,
+                    "password": password
+                };
 
                 function register_success(response) {
                     console.log(response);
-
                 }
 
                 function register_failure(response) {
@@ -321,11 +325,6 @@
 
             });
 
-            $("#register-button").click(function (e) {
-                e.preventDefault;
-                console.log('click');
-            })
-
             //For use later to create a robust ajax handler
             function my_request2(type, url, data, successHandler, failureHandler) {
                 var jqxhr = $.ajax({
@@ -357,13 +356,6 @@
                     "crossDomain": true,
                     "url": url,
                     "method": method,
-                    "headers": {
-                        "cache-control": "no-cache",
-                        "postman-token": "e94cfe4d-dd33-f8e4-11a3-3730a3c25500"
-                    },
-                    "processData": false,
-                    "contentType": false,
-                    "mimeType": "multipart/form-data",
                     "data": data
                 });
                 jqxhr.done(successHandler);
