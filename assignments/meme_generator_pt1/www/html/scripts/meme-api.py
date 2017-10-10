@@ -325,8 +325,10 @@ def meme(action):
         print(top)
         print(bottom)
         print(style)
+
+        objID = client['memes_db']['memes'].insert({"top_text":top,"bottom_text":bottom,"style_info":style})
         
-        return jsonify({"success": True, "_id": -1})
+        return jsonify({"success": True, "_id": str(_id)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5050)
