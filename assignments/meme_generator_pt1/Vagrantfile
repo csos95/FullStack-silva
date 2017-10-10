@@ -20,6 +20,5 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   #config.vm.synced_folder "data", "/vagrant_data"
   config.vm.synced_folder "www", "/var/www"
-  config.vm.synced_folder "scripts", "/vagrant_data/scripts"
   config.vm.provision "shell", path: "https://gist.githubusercontent.com/rugbyprof/3d1f3aee7febdc05cfe7b1a4e4f96203/raw/4e6964c7012edf8fe0c411cb3533b8f00a5e5d57/vagrant.sh"
 end
