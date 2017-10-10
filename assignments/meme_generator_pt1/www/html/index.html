@@ -228,7 +228,7 @@
                     "data": data,
                     "async": true,
                     "crossDomain": false,
-                    "url": "http://localhost:5050/meme_generator/v1.0/generate_image",
+                    "url": "https://vagrant.ssilva.work/api/meme_generator/v1.0/generate_image",
                     "method": "POST",
                     "headers": {
                         "cache-control": "no-cache"
@@ -264,7 +264,7 @@
                 pass = $('#password').val()
                 repass = $('#reenterpassword').val()
 
-                url = "http://localhost:5050/meme_generator/v1.0/register"
+                url = "https://vagrant.ssilva.work/api/meme_generator/v1.0/register"
 
                 data = {
                     "email": email,
@@ -291,7 +291,7 @@
 
                 console.log(url);
                 console.log(name);
-                url = "http://localhost:5050/meme_generator/v1.0/grab_image?url=" + url + "&" + "fname=" + name
+                url = "https://vagrant.ssilva.work/api/meme_generator/v1.0/grab_image?url=" + url + "&" + "fname=" + name
 
 
                 function image_success(response) {

@@ -3,7 +3,7 @@ import json
 from flask import Flask, url_for, request, jsonify, Session
 from flask_cors import CORS
 import random
-import os 
+import os
 from pymongo import MongoClient
 import time
 import hashlib
@@ -21,6 +21,7 @@ client = MongoClient()
 app = Flask(__name__)
 CORS(app)
 
+
 ######################################################################
 # Helper methods
 ######################################################################
@@ -32,7 +33,8 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
-def duplicate_value(field_name,new_val):
+
+def duplicate_value(field_name, new_val):
     """
     field_name = key item in databaes were checking against (e.g. email, username)
     new_val = new item that needs to be unique
@@ -52,6 +54,7 @@ def index():
     This "root" end point calls the "site_map" route.
     """
     return site_map()
+
 
 @app.route('/site_map', methods=['GET'])
 def site_map():
@@ -77,10 +80,11 @@ def site_map():
     else:
         return jsonify({"success": False, "routes": links})
 
+
 # End Helper methods##################################################
 
 # Mongo Help
-# 
+#
 # Add items to mongo (POST):
 #     Insert an item with an _id of 1:
 #     _id = client['memes_db']['users'].insert({"_id":"1","other":"stuff"})
@@ -93,14 +97,14 @@ def site_map():
 #     Get the count of records with email of bob@google.com
 #     count = client['memes_db']['users'].find({"email":"bob@google.com"}).count()
 #
-# For more go to: 
+# For more go to:
 #     http://api.mongodb.com/python/current/api/pymongo/collection.html
 
 # Request Help
 #
 # Figure out what kind of request it is:
 #    request.method == POST, GET, PUT, DELETE
-# 
+#
 # If the request.method is POST params will be in:
 #    request.form['var1']
 #    request.form['var2']
@@ -110,20 +114,19 @@ def site_map():
 #    request.args['var1']
 #    request.args['var2']
 
-
 ######################################################################
 # Begin Routes
 ######################################################################
 
 # User Routes ########################################################
-
 """
 POST    /user/new    : Add a new user to the site
 POST    /user/find   : Retrieve (authenticate) user
 PUT     /user/edit :  Update an existing user (not implementing right now)
 """
 
-@app.route('/user/<action>', methods=['POST','DELETE'])
+
+@app.route('/user/<action>', methods=['POST', 'DELETE'])
 def user(action=None):
     print(action)
     """
@@ -151,19 +154,24 @@ def user(action=None):
         username
         password
     """
-    unique_vals = ['email','username']
+    unique_vals = ['email', 'username']
     if action == 'new':
-        # create empty document 
+        # create empty document
         document = {}
 
         count = client['memes_db']['users'].find().count()
         max_id = count + 1
 
         # build document to insert
-        for k,v in request.form.items():
+        for k, v in request.form.items():
             # check for duplicate values
-            if k in unique_vals and duplicate_value(k,v):
-                return jsonify({"success":False,"error":"duplicate value","key":k,"value":v})
+            if k in unique_vals and duplicate_value(k, v):
+                return jsonify({
+                    "success": False,
+                    "error": "duplicate value",
+                    "key": k,
+                    "value": v
+                })
             document[k] = v
         document['_id'] = max_id
 
@@ -174,9 +182,9 @@ def user(action=None):
         _id = client['memes_db']['users'].insert(document)
 
         if type(_id) is int:
-            return jsonify({"success":True})
+            return jsonify({"success": True})
         else:
-            return jsonify({"success":False,"error":"mongo error?"}) 
+            return jsonify({"success": False, "error": "mongo error?"})
 
         # _id = client['memes_db']['users'].insert(document)
     elif action == 'find':
@@ -189,30 +197,44 @@ def user(action=None):
         user_password = hashlib.sha224(request.form['password']).hexdigest()
 
         if request.form.has_key("email"):
-             email_exists = client['memes_db']['users'].find({"email":request.form['email']}).count()
+            email_exists = client['memes_db']['users'].find({
+                "email":
+                request.form['email']
+            }).count()
         else:
             email_exists = 0
 
         if request.form.has_key("username"):
-            user_exists = client['memes_db']['users'].find({"username":request.form['username']}).count()
+            user_exists = client['memes_db']['users'].find({
+                "username":
+                request.form['username']
+            }).count()
         else:
             user_exists = 0
 
         if email_exists + user_exists == 0:
-            return jsonify({"success":False,"error":"User doesn't exists"})
+            return jsonify({"success": False, "error": "User doesn't exists"})
         elif email_exists > 0:
-            db_password = client['memes_db']['users'].find({"email":request.form['email']},{"_id":0,"password":1})
+            db_password = client['memes_db']['users'].find({
+                "email":
+                request.form['email']
+            }, {"_id": 0,
+                "password": 1})
         else:
-            db_password = client['memes_db']['users'].find({"username":request.form['username']},{"_id":0,"password":1})
+            db_password = client['memes_db']['users'].find({
+                "username":
+                request.form['username']
+            }, {"_id": 0,
+                "password": 1})
 
         if 'password' in db_password[0]:
             print(db_password[0]['password'])
 
-            # check hashed passwords match here ... 
-            # if not, redirect to 
+            # check hashed passwords match here ...
+            # if not, redirect to
 
-        return jsonify({"success":True})
-    else: # its a delete
+        return jsonify({"success": True})
+    else:  # its a delete
         pass
 
 
@@ -224,7 +246,8 @@ POST /meme: Add a new meme to the db
 GET  /meme : Retreive a meme from the db
 """
 
-@app.route('/image', methods=['POST','GET','DELETE'])
+
+@app.route('/image', methods=['POST', 'GET', 'DELETE'])
 def image():
     """
     Meme Image Document:
@@ -255,8 +278,9 @@ def image():
     """
     pass
 
-@app.route('/meme', methods=['POST','GET','DELETE'])
-def meme():
+
+@app.route('/meme/<action>', methods=['POST', 'GET', 'DELETE'])
+def meme(action):
     """
     Meme Document:
     {
@@ -293,7 +317,14 @@ def meme():
         - tag (key word search)
         - userid or email of owner ('anonymous' otherwise)
     """
-    pass
+    
+    if action == 'new':
+        top = request.form['top_text']
+        bottom = request.form['bottom_text']
+        style = request.form['style_info']
+        print(top)
+        print(bottom)
+        print(style)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5050)
