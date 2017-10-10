@@ -236,7 +236,7 @@
                     "data": data,
                     "async": true,
                     "crossDomain": false,
-                    "url": "https://vagrant.ssilva.work/api/meme_generator/v1.0/generate_image",
+                    "url": "/api/meme_generator/v1.0/generate_image",
                     "method": "POST",
                     "headers": {
                         "cache-control": "no-cache"
@@ -275,7 +275,7 @@
                 password = $('#password').val();
 
 
-                url = "https://vagrant.ssilva.work/api/user/new";
+                url = "/api/user/new";
 
                 data = {
                     "first": first,
@@ -303,7 +303,7 @@
 
                 console.log(url);
                 console.log(name);
-                url = "https://vagrant.ssilva.work/api/meme_generator/v1.0/grab_image?url=" + url + "&" + "fname=" + name
+                url = "/api/meme_generator/v1.0/grab_image?url=" + url + "&" + "fname=" + name
 
 
                 function image_success(response) {
