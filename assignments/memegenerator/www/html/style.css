@@ -1,3 +1,7 @@
+@font-face {
+    font-family: impact;
+    src: url('impact.ttf');
+}
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #151515;
@@ -15,16 +19,48 @@ label {
     font-size: 16pt;
     color: white;
 }
-input[type="url"], input[type="text"] {
+#url, #name {
     width: 100%;
+}
+#url, #name, #top, #bottom {
     font-size: 14pt;
     padding: 5px;
+    color: white;
+    background-color: rgba(0,0,0,0);
 }
 input[type="button"] {
     font-size: 16pt;
     padding: 5px;
     border-radius: 3px;
     border: none;
+}
+#image-form {
+
+}
+#meme-form {
+    display: none;
+}
+#meme-template {
+    max-width: 100%;
+    max-height: 100%;
+}
+#top {
+    font-size: 14pt;
+    font-family: 'impact';
+    position: absolute;
+    top: 120px;
+    left: 30px;
+    right: 30px;
+    resize: none;
+}
+#bottom {
+    font-size: 14pt;
+    font-family: 'impact';
+    position: absolute;
+    bottom: 100px;
+    left: 30px;
+    right: 30px;
+    resize: none;
 }
 #meme {
     max-width: 100%;

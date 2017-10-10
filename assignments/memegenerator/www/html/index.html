@@ -10,24 +10,40 @@
 
 <body>
 
+	<!-- 1. input image url and click retrieve image
+		 2. top and bottom text boxes are overlaid over the image
+		 3. add text and click submit
+		 4. server receives top, bottom, image, generates new image, and sends the url back -->
+
 	<div id="wrapper">
-		<form id="meme-form">
+		<div id="image-form">
 			<label for="url">URL</label><br>
 			<input id="url" type="url"><br><br>
+			<input type="button" value="submit" onclick="set_image()">
+		</div>
+		<div id="meme-form">
 			<label for="name">Name</label><br>
 			<input id="name" type="text"><br><br>
-			<label for="top">Top Text</label><br>
-			<input id="top" type="text"><br><br>
-			<label for="bottom">Bottom Text</label><br>
-			<input id="bottom" type="text"><br><br>
+			<div>
+				<img id="meme-template" src="">
+				<textarea id="top" rows="3" cols="44"></textarea>
+				<textarea id="bottom" rows="3" cols="44"></textarea>
+			</div>
 			<input type="button" value="submit" onclick="send_request()">
-		</form>
+		</div>
 
 		<img id="meme" src="">
 	</div>
 
 	<script>
 		let apiURL = 'http://localhost:4568/'
+
+		function set_image() {
+			document.getElementById('meme-template').src = document.getElementById('url').value;
+			document.getElementById('image-form').style.display = 'none';
+			document.getElementById('meme-form').style.display = 'block';
+		}
+
 		function send_request() {
 			let url = document.getElementById('url').value;
 			let name = document.getElementById('name').value;
