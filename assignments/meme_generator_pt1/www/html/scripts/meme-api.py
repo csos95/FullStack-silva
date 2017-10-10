@@ -317,7 +317,7 @@ def meme(action):
         - tag (key word search)
         - userid or email of owner ('anonymous' otherwise)
     """
-    
+
     if action == 'new':
         top = request.form['top_text']
         bottom = request.form['bottom_text']
@@ -325,6 +325,8 @@ def meme(action):
         print(top)
         print(bottom)
         print(style)
+        
+        return jsonify({"success": True, "_id": -1})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5050)
