@@ -7,7 +7,7 @@ import os
 from pymongo import MongoClient
 import time
 import hashlib
-from meme import create_meme
+#from meme import create_meme
 
 BLANKDIR = '/var/www/html/memes_blank'
 MEMEDIR = '/var/www/html/memes'
