@@ -15,5 +15,6 @@
 }
 
 #magnifier {
+	cursor: none;
 	position: absolute;
 }
